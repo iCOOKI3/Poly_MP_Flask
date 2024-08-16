@@ -191,7 +191,7 @@ def index():
 
                 # Schedule the removal of the flag file after 30 seconds
                 def remove_flag():
-                    time.sleep(40)
+                    time.sleep(500)
                     if os.path.exists('training_complete.flag'):
                         os.remove('training_complete.flag')
 
