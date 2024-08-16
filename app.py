@@ -139,9 +139,9 @@ def retrain_model():
 
         model.save('staff_mobilenet_v2_model.h5')
 
-        flag_file_path = "C:\Poly Stuff/Y3S1/MP/Poly_MP_Flask/training_complete.flag"
-        with open(flag_file_path, 'w') as flag_file:
+        with open('training_complete.txt', 'w') as flag_file:
             flag_file.write('Done')
+
 
 
     except Exception as e:
@@ -171,8 +171,8 @@ def index():
                 thread.start()
 
                 # Wait for the retraining to complete
-                while not os.path.exists('training_complete.flag'):
-                    time.sleep(1)
+                while not os.path.exists('training_complete.txt'):
+                    time.sleep(60)
 
                 # Use the preloaded model for prediction
                 model = tf.keras.models.load_model('staff_mobilenet_v2_model.h5')
@@ -192,8 +192,8 @@ def index():
                 # Schedule the removal of the flag file after 30 seconds
                 def remove_flag():
                     time.sleep(500)
-                    if os.path.exists('training_complete.flag'):
-                        os.remove('training_complete.flag')
+                    if os.path.exists('training_complete.txt'):
+                        os.remove('training_complete.txt')
 
                 # Start a thread to handle flag file removal
                 Thread(target=remove_flag).start()
@@ -234,7 +234,7 @@ def predict():
 
 @app.route("/status", methods=["GET"])
 def status():
-    if os.path.exists('training_complete.flag'):
+    if os.path.exists('training_complete.txt'):
         return jsonify({"status": "ready"})
     else:
         return jsonify({"status": "training"})
