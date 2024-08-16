@@ -139,9 +139,10 @@ def retrain_model():
 
         model.save('staff_mobilenet_v2_model.h5')
 
-        # Create a flag file to indicate retraining is complete
-        with open('training_complete.flag', 'w') as flag_file:
+        flag_file_path = "C:\Poly Stuff/Y3S1/MP/Poly_MP_Flask/training_complete.flag"
+        with open(flag_file_path, 'w') as flag_file:
             flag_file.write('Done')
+
 
     except Exception as e:
         print(f"Error during retraining: {e}")
